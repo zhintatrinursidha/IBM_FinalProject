@@ -1,0 +1,481 @@
+/* =========================================================
+   style.css — DompetKu Custom Styles
+   Tailwind CSS handles the bulk of styling.
+   This file adds: custom transitions, scrollbar, animation,
+   form polish, and component-level overrides.
+   ========================================================= */
+
+/* ----- Base ----- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ----- Custom scrollbar (Webkit) ----- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ----- Form inputs — consistent focus ring & transition ----- */
+.form-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Remove number input spin buttons for cleaner look */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ----- Summary cards hover lift ----- */
+.summary-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+}
+
+/* ----- Transaction card ----- */
+.transaction-card {
+  border-left: 4px solid transparent;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.transaction-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+.transaction-card.income {
+  border-left-color: #16A34A;
+}
+.transaction-card.expense {
+  border-left-color: #DC2626;
+}
+
+/* ----- Filter type buttons ----- */
+.filter-type-btn {
+  color: #6b7280;
+  background: transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.filter-type-btn:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+.filter-type-btn.active-filter {
+  background: #2563EB;
+  color: #ffffff;
+}
+.filter-type-btn.active-filter span {
+  color: rgba(255,255,255,0.7);
+}
+
+/* ----- Edit / Delete action buttons on cards ----- */
+.btn-edit {
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn-edit:hover {
+  background: #DBEAFE;
+  color: #1D4ED8;
+}
+.btn-delete {
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn-delete:hover {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+/* ----- Smart Insight items ----- */
+.insight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.5;
+}
+.insight-item.warning {
+  background: #FFF7ED;
+  border-color: #FED7AA;
+  color: #92400E;
+}
+.insight-item.positive {
+  background: #F0FDF4;
+  border-color: #BBF7D0;
+  color: #14532D;
+}
+.insight-item.info {
+  background: #EFF6FF;
+  border-color: #BFDBFE;
+  color: #1E3A8A;
+}
+
+/* ----- Category badge ----- */
+.category-badge {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 99px;
+  display: inline-block;
+}
+
+/* ----- Form section slide-in animation ----- */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+section {
+  animation: fadeSlideUp 0.3s ease both;
+}
+
+/* ----- Modal backdrop transition ----- */
+#confirm-modal {
+  transition: opacity 0.2s ease;
+}
+
+/* ----- Empty state illustration pulse ----- */
+#empty-state svg {
+  animation: pulse 2.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.6;  }
+}
+
+/* ----- Highlight flash when card is first added ----- */
+@keyframes highlightNew {
+  0%   { background: #DBEAFE; }
+  100% { background: #ffffff; }
+}
+.highlight-new {
+  animation: highlightNew 0.8s ease-out forwards;
+}
+
+/* ----- Responsive: ensure date input doesn't break layout ----- */
+input[type="date"] {
+  min-height: 42px;
+}
+
+/* ----- Focus-visible outline for keyboard nav ----- */
+:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: 2px;
+}
+
+/* ----- Validation error border (used by JS, ensure it renders) ----- */
+.border-expense {
+  border-color: #DC2626 !important;
+}
+
+/* =========================================================
+   NAVIGATION — Desktop top tabs & Mobile bottom nav
+   ========================================================= */
+
+/* ----- Desktop top tab buttons (inside header) ----- */
+.nav-tab-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 10px 16px 8px;
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+.nav-tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.nav-tab-btn[aria-current="page"] {
+  color: #ffffff;
+  border-bottom-color: #ffffff;
+  font-weight: 600;
+}
+.nav-tab-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: -2px;
+}
+
+/* ----- Mobile bottom nav buttons ----- */
+.nav-bottom-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 10px 4px 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #9ca3af; /* gray-400 */
+  transition: color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-bottom-btn:hover {
+  color: #6b7280;
+}
+.nav-bottom-btn[aria-current="page"] {
+  color: #2563EB;
+}
+.nav-bottom-label {
+  font-size: 0.625rem; /* 10px */
+  font-weight: 500;
+  line-height: 1;
+}
+.nav-bottom-btn[aria-current="page"] .nav-bottom-label {
+  font-weight: 600;
+}
+.nav-bottom-btn:focus-visible {
+  outline: 2px solid #2563EB;
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+/* ----- Page switching: hide/show without display:none flash ----- */
+.page-content {
+  /* Pages shown/hidden via .hidden (Tailwind) added/removed by JS */
+}
+
+/* Page entry animation */
+.page-enter {
+  animation: pageEnter 0.22s ease both;
+}
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+
+/* =========================================================
+   BUDGET — progress bars & card states
+   ========================================================= */
+
+/* Progress bar track */
+.budget-bar-track {
+  height: 8px;
+  border-radius: 99px;
+  background: #e5e7eb; /* gray-200 */
+  overflow: hidden;
+}
+
+/* Progress bar fill — width set inline by JS */
+.budget-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.5s ease;
+  min-width: 4px; /* always show a sliver even at ~0% */
+}
+
+/* Colour states set by JS via class */
+.budget-bar-blue   { background: #2563EB; }
+.budget-bar-orange { background: #F97316; }
+.budget-bar-red    { background: #DC2626; }
+
+/* Budget card warning/exceeded banners */
+.budget-warning-banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+.budget-warning-banner.warn {
+  background: #FFF7ED;
+  color: #92400E;
+  border: 1px solid #FED7AA;
+}
+.budget-warning-banner.exceeded {
+  background: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+/* Budget card edit/delete buttons */
+.btn-budget-edit {
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn-budget-edit:hover {
+  background: #DBEAFE;
+  color: #1D4ED8;
+}
+.btn-budget-delete {
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn-budget-delete:hover {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+
+/* =========================================================
+   STATISTIK — charts & summary cards
+   ========================================================= */
+
+/* Donut SVG — hover on segments */
+#donut-segments path {
+  transition: opacity 0.15s ease;
+  cursor: default;
+}
+#donut-segments path:hover {
+  opacity: 0.82;
+}
+
+/* Donut center text */
+.donut-center-value {
+  font-family: inherit;
+}
+
+/* Legend item */
+.donut-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.8125rem;
+  padding: 4px 0;
+}
+.donut-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.donut-legend-label {
+  flex: 1;
+  color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.donut-legend-values {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  font-size: 0.75rem;
+}
+.donut-legend-amount {
+  font-weight: 600;
+  color: #1f2328;
+}
+.donut-legend-pct {
+  color: #9ca3af;
+}
+
+/* Bar chart SVG — responsive width */
+.bar-chart-svg {
+  display: block;
+  width: 100%;
+  min-width: 320px;
+  overflow: visible;
+}
+
+/* Bar chart bars hover */
+.bar-income,
+.bar-expense {
+  transition: opacity 0.15s ease;
+  cursor: default;
+}
+.bar-income:hover,
+.bar-expense:hover {
+  opacity: 0.75;
+}
+
+/* Tooltip for bar chart (shown on hover via JS title element) */
+.bar-chart-svg text {
+  font-family: inherit;
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   TOAST NOTIFICATION
+   ========================================================= */
+.toast {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toast.toast-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.toast.toast-hidden-start {
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0);    }
+  to   { opacity: 0; transform: translateX(-50%) translateY(10px); }
+}
+.toast.animating-in  { animation: toastIn  0.25s ease forwards; }
+.toast.animating-out { animation: toastOut 0.25s ease forwards; }
+
+
+/* =========================================================
+   NABUNG — transaction card blue accent
+   ========================================================= */
+
+/* Nabung card: blue left border (like income=green, expense=red) */
+.transaction-card.nabung {
+  border-left-color: #2563EB;
+}
+
+/* Disabled type select when Nabung is active */
+select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #f3f4f6;
+}
+
